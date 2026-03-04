@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import "./App.css";
 
 function App() {
@@ -22,6 +22,18 @@ function App() {
     setPassword(pass);
   }, [length, numberAllowed, charAllowed, setPassword]);
 
+  const copyPasswordToClipboard = useCallback(() => {
+    // 1. Password ko blue highlight (select) karne ke liye
+    passwordRef.current?.select();
+
+    passwordRef.current?.setSelectionRange(0, 20);
+
+    window.navigator.clipboard.writeText(password);
+  }, [password]);
+
+  // use ref hook
+  const passwordRef = useRef(null);
+
   // Yeh useEffect password ko automatically generate karega jab bhi dependencies change hongi
   useEffect(() => {
     passwordGenerator();
@@ -38,9 +50,11 @@ function App() {
           className="outline-none w-full py-1 px-3"
           placeholder="Password"
           readOnly
+          ref={passwordRef}
         />
         <button
-          onClick={passwordGenerator}
+          onClick={copyPasswordToClipboard}
+          // onClick={passwordGenerator}
           className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0 hover:bg-blue-800"
         >
           Generate
@@ -69,6 +83,8 @@ function App() {
             type="checkbox"
             defaultChecked={numberAllowed}
             id="numberInput"
+            // Here is changed the always true in setNumberAllowed to prev state so that i can change the prev value
+
             onChange={() => {
               setNumberAllowed((prev) => !prev);
             }}
@@ -92,5 +108,9 @@ function App() {
     </div>
   );
 }
+
+// is code mei useCallBack() memory o cache me rkhta hain naki re render krne pe useEffect ko chlne se rok deta hain taki useEffect confuse na ho
+
+// useEffect yha pe har baar dependencies mei change krne pe dobbar setPasswordGenerator function ko chla deta hain
 
 export default App;
