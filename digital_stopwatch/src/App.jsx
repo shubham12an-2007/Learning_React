@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import "./App.css";
+import StartTimer from "./components/StartTimer";
+import StopTimer from "./components/StopTimer";
+import ResetTimer from "./components/ResetTimer";
 
 function App() {
   const [time, setTime] = useState(0);
@@ -65,26 +68,11 @@ function App() {
 
         {/* Controls Grid */}
         <div className="grid grid-cols-2 gap-4">
-          <button
-            onClick={startTimer}
-            className="col-span-2 py-4 bg-white text-black font-bold rounded-2xl hover:bg-orange-500 hover:text-white transition-all duration-300 active:scale-95 shadow-lg"
-          >
-            START
-          </button>
+          <StartTimer startTimer={startTimer}></StartTimer>
 
-          <button
-            onClick={stopTimer}
-            className="py-4 bg-[#1a1a1a] text-white font-bold rounded-2xl border border-white/5 hover:bg-red-500/20 hover:border-red-500/50 transition-all duration-300 active:scale-95"
-          >
-            STOP
-          </button>
+          <StopTimer stopTimer={stopTimer}></StopTimer>
 
-          <button
-            onClick={resetTimer}
-            className="py-4 bg-[#1a1a1a] text-white font-bold rounded-2xl border border-white/5 hover:bg-gray-700 transition-all duration-300 active:scale-95"
-          >
-            RESET
-          </button>
+          <ResetTimer resetTimer={resetTimer}></ResetTimer>
         </div>
       </div>
     </div>
